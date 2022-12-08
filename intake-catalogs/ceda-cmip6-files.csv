@@ -1,0 +1,3 @@
+project,activity_id,source_id,institution_id,experiment_id,member_id,table_id,variable_id,grid_label,version,uri,format
+CMIP6,CMIP,CCCma,CanESM5,historical,r1i1p1f1,Oyr,o2,gn,latest,outputs/kc-indexes/files/CMIP6.CMIP.CCCma.CanESM5.historical.r1i1p1f1.Oyr.o2.gn.latest.json,reference
+CMIP6,CMIP,CMCC,CMCC-ESM2,historical,r1i1p1f1,Oyr,o2,gn,latest,outputs/kc-indexes/files/CMIP6.CMIP.CMCC.CMCC-ESM2.historical.r1i1p1f1.Oyr.o2.gn.latest.json,reference

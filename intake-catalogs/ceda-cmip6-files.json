@@ -1,0 +1,86 @@
+{
+    "default_columns": [
+        "project",
+        "activity_id",
+        "source_id",
+        "institution_id",
+        "experiment_id",
+        "member_id",
+        "table_id",
+        "variable_id",
+        "grid_label",
+        "version",
+        "uri",
+        "format"
+    ],
+    "aggregation_control": {
+        "aggregations": [
+            {
+                "attribute_name": "variable_id",
+                "type": "union"
+            }
+        ],
+        "groupby_attrs": [
+        "project",
+        "activity_id",
+        "source_id",
+        "institution_id",
+        "experiment_id",
+        "member_id",
+        "table_id",
+        "variable_id",
+        "grid_label",
+        "version"
+        ],
+        "variable_column_name": "variable_id"
+    },
+    "assets": {
+        "column_name": "uri",
+        "format_column_name": "format"
+    },
+    "attributes": [
+        {
+            "column_name": "project"
+        },
+        {
+            "column_name": "activity_id",
+            "vocabulary": "https://raw.githubusercontent.com/WCRP-CMIP/CMIP6_CVs/master/CMIP6_activity_id.json"
+        },
+        {
+            "column_name": "source_id",
+            "vocabulary": "https://raw.githubusercontent.com/WCRP-CMIP/CMIP6_CVs/master/CMIP6_source_id.json"
+        },
+        {
+            "column_name": "institution_id",
+            "vocabulary": "https://raw.githubusercontent.com/WCRP-CMIP/CMIP6_CVs/master/CMIP6_institution_id.json"
+        },
+        {
+            "column_name": "experiment_id",
+            "vocabulary": "https://raw.githubusercontent.com/WCRP-CMIP/CMIP6_CVs/master/CMIP6_experiment_id.json"
+        },
+        {
+            "column_name": "member_id",
+            "vocabulary": ""
+        },
+        {
+            "column_name": "table_id",
+            "vocabulary": "https://raw.githubusercontent.com/WCRP-CMIP/CMIP6_CVs/master/CMIP6_table_id.json"
+        },
+        {
+            "column_name": "variable_id",
+            "vocabulary": ""
+        },
+        {
+            "column_name": "grid_label",
+            "vocabulary": "https://raw.githubusercontent.com/WCRP-CMIP/CMIP6_CVs/master/CMIP6_grid_label.json"
+        },
+        {
+            "column_name": "version",
+            "vocabulary": ""
+        }
+    ],
+    "catalog_file": "intake-catalogs/ceda-cmip6-files.csv",
+    "description": "This is a small test ESM-collection for CMIP6 data on CEDA disk storage system",
+    "esmcat_version": "0.1.0",
+    "id": "intake.ceda.files.cmip6"
+}

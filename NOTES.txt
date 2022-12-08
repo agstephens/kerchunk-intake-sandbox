@@ -1,0 +1,64 @@
+$ ls /badc/cmip6/data/CMIP6/*/*/*/{historical,ssp585}/r1i1p1f1/Oyr/o2/gn/latest | grep : | cut -d: -f1 > pathlist.txt
+
+$ wc -l pathlist.txt
+20 pathlist.txt
+
+$ for p in $(cat pathlist.txt) ; do echo ${p}: $(ls $p/*.nc | wc -l)  ; done
+/badc/cmip6/data/CMIP6/CMIP/CCCma/CanESM5/historical/r1i1p1f1/Oyr/o2/gn/latest: 1
+/badc/cmip6/data/CMIP6/CMIP/CMCC/CMCC-ESM2/historical/r1i1p1f1/Oyr/o2/gn/latest: 1
+/badc/cmip6/data/CMIP6/CMIP/CSIRO/ACCESS-ESM1-5/historical/r1i1p1f1/Oyr/o2/gn/latest: 2
+/badc/cmip6/data/CMIP6/CMIP/EC-Earth-Consortium/EC-Earth3-CC/historical/r1i1p1f1/Oyr/o2/gn/latest: 165
+/badc/cmip6/data/CMIP6/CMIP/HAMMOZ-Consortium/MPI-ESM-1-2-HAM/historical/r1i1p1f1/Oyr/o2/gn/latest: 9
+/badc/cmip6/data/CMIP6/CMIP/IPSL/IPSL-CM5A2-INCA/historical/r1i1p1f1/Oyr/o2/gn/latest: 1
+/badc/cmip6/data/CMIP6/CMIP/IPSL/IPSL-CM6A-LR/historical/r1i1p1f1/Oyr/o2/gn/latest: 1
+/badc/cmip6/data/CMIP6/CMIP/MPI-M/MPI-ESM1-2-HR/historical/r1i1p1f1/Oyr/o2/gn/latest: 33
+/badc/cmip6/data/CMIP6/CMIP/MPI-M/MPI-ESM1-2-LR/historical/r1i1p1f1/Oyr/o2/gn/latest: 9
+/badc/cmip6/data/CMIP6/CMIP/NCC/NorESM2-LM/historical/r1i1p1f1/Oyr/o2/gn/latest: 17
+/badc/cmip6/data/CMIP6/CMIP/NCC/NorESM2-MM/historical/r1i1p1f1/Oyr/o2/gn/latest: 17
+/badc/cmip6/data/CMIP6/ScenarioMIP/CCCma/CanESM5/ssp585/r1i1p1f1/Oyr/o2/gn/latest: 3
+/badc/cmip6/data/CMIP6/ScenarioMIP/CMCC/CMCC-ESM2/ssp585/r1i1p1f1/Oyr/o2/gn/latest: 1
+/badc/cmip6/data/CMIP6/ScenarioMIP/CSIRO/ACCESS-ESM1-5/ssp585/r1i1p1f1/Oyr/o2/gn/latest: 5
+/badc/cmip6/data/CMIP6/ScenarioMIP/DKRZ/MPI-ESM1-2-HR/ssp585/r1i1p1f1/Oyr/o2/gn/latest: 18
+/badc/cmip6/data/CMIP6/ScenarioMIP/EC-Earth-Consortium/EC-Earth3-CC/ssp585/r1i1p1f1/Oyr/o2/gn/latest: 86
+/badc/cmip6/data/CMIP6/ScenarioMIP/IPSL/IPSL-CM6A-LR/ssp585/r1i1p1f1/Oyr/o2/gn/latest: 2
+/badc/cmip6/data/CMIP6/ScenarioMIP/MPI-M/MPI-ESM1-2-LR/ssp585/r1i1p1f1/Oyr/o2/gn/latest: 5
+/badc/cmip6/data/CMIP6/ScenarioMIP/NCC/NorESM2-LM/ssp585/r1i1p1f1/Oyr/o2/gn/latest: 9
+/badc/cmip6/data/CMIP6/ScenarioMIP/NCC/NorESM2-MM/ssp585/r1i1p1f1/Oyr/o2/gn/latest: 9
+
+Let's create some kerchunks:
+
+$ ./make-kc-indexes.sh
+
+That writes the kerchunk indexes and this file:
+
+kc-paths.txt
+
+Download the DRKZ template for CMIP6 Intake:
+
+$ wget https://gitlab.dkrz.de/data-infrastructure-services/intake-esm/-/raw/master/esm-collections/cloud-access/dkrz_cmip6_disk.json
+
+$ wget https://swift.dkrz.de/v1/dkrz_a44962e3ba914c309a7421573a6949a6/intake-esm/dkrz_cmip6_disk.csv.gz
+
+Copy them and create our own versions:
+
+$ mkdir -p intake-catalogs
+$ cp dkrz_cmip6_disk.json intake-catalogs/ceda-cmip6-files.json
+
+Look at the columns:
+
+$ grep column_name intake-catalogs/ceda-cmip6-files.json | cut -d\" -f4 > ceda-columns.txt
+$ grep column_name dkrz_cmip6_disk.json | cut -d\" -f4 > dkrz-columns.txt
+
+Need to work out the column values for CEDA version.
+
+Make intake catalog:
+
+$ ./make-intake-catalog.py kc-paths.txt intake-catalogs/ceda-cmip6-files.csv
+[INFO] Wrote: intake-catalogs/ceda-cmip6-files.csv
+
+
+Now read it:
+
+
+
+ 
