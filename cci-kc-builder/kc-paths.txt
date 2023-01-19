@@ -1,3 +1,1 @@
-outputs/kc-indexes/files/1.json
-outputs/kc-indexes/files/2.json
-outputs/kc-indexes/files/4.json
+kc-indexes/BICEP-OC-L3S-PP-MERGED-1M_MONTHLY_9km_mapped-1998-2020-fv4.2.json
