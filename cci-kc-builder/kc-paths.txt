@@ -1,0 +1,3 @@
+outputs/kc-indexes/files/1.json
+outputs/kc-indexes/files/2.json
+outputs/kc-indexes/files/4.json
