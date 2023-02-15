@@ -1,0 +1,2 @@
+rec_id, title, cat_record, archive_path, zarr_path, s3_path, size_gb, n_files
+ecmwf-era5_oper_fc_sfc_metss, ECMWF ERA5 - surface level forecasts - metss, https://catalogue.ceda.ac.uk/uuid/3e7ad71f09c244318f9bddf92e5fcc4b%7C3050498%7C4587170082875, /badc/ecmwf-era5/data/oper/fc_sfc/*/*/*/*.metss.nc, , , , ,

@@ -19,7 +19,7 @@ while read dr; do
 #    filepaths=$(ls $dr/*.nc | head -3)
     filepaths=${dr}/*.nc
  
-    _cmd="kerchunk_tools create -p $prefix -o $kc_file -b $max_bytes $filepaths"
+    _cmd="kerchunk_tools create -p $prefix -o $kc_file -b $max_bytes -C ${HOME}/KERCHUNK-CACHE $filepaths"
     echo "[INFO] Running: $_cmd"
 
     time $_cmd
@@ -33,3 +33,4 @@ done < pathlist.txt
 
 echo 
 echo "[INFO] Wrote the following kerchunk files to: $kc_paths_file"
+
