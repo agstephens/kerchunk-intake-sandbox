@@ -1,1 +1,1 @@
-kc-indexes/BICEP-OC-L3S-PP-MERGED-1M_MONTHLY_9km_mapped-1998-2020-fv4.2.json
+kc-indexes-cci/BICEP-POC-MERGED-MONTHLY-v4.2.json

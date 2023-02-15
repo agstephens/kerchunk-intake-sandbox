@@ -4,8 +4,8 @@ import sys, os, glob
 import pandas as pd
 
 
-DATASETS_FILE = "datasets.csv"
-VALIDATED_FILE = "datasets-prepared.csv"
+#DATASETS_FILE = "datasets.csv"
+#VALIDATED_FILE = "datasets-prepared.csv"
 FILE_LIST_DIR = "file-lists"
 SUPPORTED_FILE_EXTENSIONS = [".nc"]
 
@@ -14,7 +14,7 @@ if not os.path.isdir(FILE_LIST_DIR):
     os.makedirs(FILE_LIST_DIR)
 
 
-def _parse(datasets_file="datasets.csv"):
+def _parse(datasets_file):
     df = pd.read_csv(datasets_file, sep=",\s+", engine="python", keep_default_na=False)
     df.rename(columns=lambda x: x.strip())
     return df
@@ -62,7 +62,7 @@ def write_file_list(rec_id, file_list):
     print(f"[INFO] Wrote: {outfile}")
  
 
-def validate_and_prepare(rec):
+def validate_and_prepare(rec, validated_file):
     print(f"Validating: {rec['title']}")
     pth = rec["archive_path"]
     rec_id = rec["rec_id"]
@@ -86,20 +86,23 @@ def validate_and_prepare(rec):
     rec["size_gb"] = round(size, 2)
     rec["n_files"] = len(file_list)
 
-    print(", ".join([str(rec[column]) for column in columns]), file=open(VALIDATED_FILE, "a"))
+    print(", ".join([str(rec[column]) for column in columns]), file=open(validated_file, "a"))
 
 
-def main():
-    df = _parse()
-    print(", ".join([column for column in list(df.columns)]), file=open(VALIDATED_FILE, "w"))
+def main(datasets_file):
+    validated_file = datasets_file.replace(".csv", "-validated.csv")
+    df = _parse(datasets_file)
+
+    print(", ".join([column for column in list(df.columns)]), file=open(validated_file, "w"))
 
     for _, rec in df.iterrows():
-        validate_and_prepare(rec)
+        validate_and_prepare(rec, validated_file)
 
-    print(f"[INFO] Wrote: {VALIDATED_FILE}")
+    print(f"[INFO] Wrote: {validated_file}")
 
 
 if __name__ == "__main__":
 
-    main()
+    main(sys.argv[1])
+
 
