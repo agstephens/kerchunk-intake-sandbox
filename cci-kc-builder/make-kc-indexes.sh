@@ -15,8 +15,8 @@ input_file=datasets-validated-${project}-${version}.csv
 file_list_dir=file-lists/${project}/${version}
 max_bytes=500
 
-prefix=kc-indexes-${project}-${version}
-cache_dir=/gws/nopw/j04/cedaproc/astephens/KERCHUNK-CACHE-CLOUD
+prefix=kc-indexes-${project}-${mode}-${version}
+cache_dir=/gws/nopw/j04/cedaproc/astephens/KERCHUNK-CACHE-$(echo $mode | tr [:lower:] [:upper:])
 creds_file=../s3_config.json
 
 IGNORES=iwontmatch
@@ -56,11 +56,6 @@ while read ROW; do
     _cmd="kerchunk_tools create -p $prefix -o $kc_file -b $max_bytes $creds_arg $compression -C $cache_dir -f $file_uris_file"
 
     time $_cmd
-
-    if [ $? -eq 0 ]; then
-        echo "[INFO] Adding index path to: $kc_paths_file"
-        echo ${prefix}/${kc_file} >> $kc_paths_file
-    fi
 
 done < $input_file
 
