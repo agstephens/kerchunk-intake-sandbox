@@ -1,35 +1,30 @@
 #!/bin/bash
 
 mode=$1
-input_file=$2
-project=$3
+project=$2
 
-if [[ ! "$mode" =~ (cloud|files) ]]; then
-    echo "[ERROR] First argument must be 'cloud' or 'files'"
-    exit
-fi
+DEFAULT_VERSION=2
+version=${3:-${DEFAULT_VERSION}}
 
-if [ ! -f "$input_file" ]; then
-    echo "[ERROR] Second argument must a valid CSV file."
-    exit
-fi
+# Check arguments
+[[ ! "$mode" =~ (cloud|files) ]] && echo "[ERROR] First argument must be 'cloud' or 'files'." && exit
+[[ ! "$project" =~ (era5|cci) ]] && echo "[ERROR] Second argument must be one of (era5|cci)." && exit
+[[ ! "$version" =~ v.* ]] && version=v${version} 
 
-
-#input_file=datasets-prepared.csv
-file_list_dir=file-lists
+input_file=datasets-validated-${project}-${version}.csv
+file_list_dir=file-lists/${project}/${version}
 max_bytes=500
-#prefix="outputs/kc-indexes/cloud"
 
-prefix=kc-indexes-${project}
-kc_paths_file=kc-paths.txt
+prefix=kc-indexes-${project}-${version}
 cache_dir=/gws/nopw/j04/cedaproc/astephens/KERCHUNK-CACHE-CLOUD
 creds_file=../s3_config.json
-#rm -f $kc_paths_file
+
+IGNORES=iwontmatch
 
 
 while read ROW; do
 
-    if [[ $ROW =~ rec_id, ]] ; then #|| [[ ! $ROW =~ POC ]]; then # || [[ $ROW =~ 9km ]] || [[ $ROW =~ BICEP-PC-MERGED-MONTHLY ]] ; then
+    if [[ $ROW =~ (rec_id,|${IGNORES}) ]] ; then 
         echo "[DEBUG] Ignoring row: ${ROW}"
         continue
     fi
@@ -45,15 +40,20 @@ while read ROW; do
         file_uris_file=${file_list_dir}/${rec_id}-uri-list.txt
         ./map-paths-from-list.py $file_list_file $file_uris_file
 
-        creds_arg="-c $creds_file"
+        creds_arg="-s $creds_file"
+    else
+        file_uris_file=$file_list_file
     fi
+
+    # Set compression of kerchunk files
+    compression="-c zstd"
 
     echo "[INFO] Found: $(wc -l $file_list_file) files"
     dsid=$rec_id
 
-    kc_file="${dsid}.json"
+    kc_file="${dsid}.zstd"
 
-    _cmd="kerchunk_tools create -p $prefix -o $kc_file -b $max_bytes $creds_arg -C $cache_dir -f $file_uris_file"
+    _cmd="kerchunk_tools create -p $prefix -o $kc_file -b $max_bytes $creds_arg $compression -C $cache_dir -f $file_uris_file"
 
     time $_cmd
 
@@ -64,6 +64,5 @@ while read ROW; do
 
 done < $input_file
 
-echo 
-echo "[INFO] Wrote the following kerchunk files to: $kc_paths_file"
+echo "[INFO] All done!"
 
