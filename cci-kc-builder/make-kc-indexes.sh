@@ -20,7 +20,7 @@ cache_dir=/gws/nopw/j04/cedaproc/astephens/KERCHUNK-CACHE-$(echo $mode | tr [:lo
 creds_file=../s3_config.json
 
 IGNORES=iwontmatch
-
+IGNORES='ESACCI|BICEP-OEP|BICEP-PC|BICEP-POC'
 
 while read ROW; do
 
