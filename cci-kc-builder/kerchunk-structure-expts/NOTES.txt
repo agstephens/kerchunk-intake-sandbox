@@ -1,0 +1,9 @@
+In this experiment, we:
+
+1. Create a KC file from a NetCDF file
+2. Copy the KC file and edit the copy to change the chunk patterns (i.e. double the number of chunks from 1 to 2).
+3. Check that the data is identical when read in from kc1 and kc2.
+4. Create kc3 - using the "gen" option - see:
+ - https://fsspec.github.io/kerchunk/spec.html?highlight=gen
+
+5. And this also worked - you can create rules to generate larger structures.
