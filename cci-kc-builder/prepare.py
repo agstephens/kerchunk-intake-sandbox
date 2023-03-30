@@ -28,8 +28,8 @@ def is_supported_file(fname):
     return any([fname.endswith(ext) for ext in SUPPORTED_FILE_EXTENSIONS])
 
 
-def get_file_list(rec_id, pth):
-    file_list_file = get_file_list_file(rec_id)
+def get_file_list(rec_id, pth, project, version):
+    file_list_file = get_file_list_file(rec_id, project, version)
 
     if os.path.isfile(file_list_file):
         return open(file_list_file).read().split()
@@ -48,13 +48,16 @@ def get_file_list(rec_id, pth):
     return sorted(file_list)
 
 
-def get_file_list_file(rec_id):
-    return os.path.join(FILE_LIST_DIR, f"{rec_id}-file-list.txt")
+def get_file_list_file(rec_id, project, version):
+    return os.path.join(FILE_LIST_DIR, project, version, f"{rec_id}-file-list.txt")
 
 
-def write_file_list(rec_id, file_list):
-    outfile = get_file_list_file(rec_id)
+def write_file_list(rec_id, file_list, project, version):
+    outfile = get_file_list_file(rec_id, project, version)
     if os.path.isfile(outfile): return
+
+    outdir = os.path.dirname(outfile)
+    os.makedirs(outdir)
 
     with open(outfile, "w") as writer:
         writer.write("\n".join(file_list))
@@ -62,7 +65,7 @@ def write_file_list(rec_id, file_list):
     print(f"[INFO] Wrote: {outfile}")
  
 
-def validate_and_prepare(rec, validated_file):
+def validate_and_prepare(rec, validated_file, project, version):
     print(f"Validating: {rec['title']}")
     pth = rec["archive_path"]
     rec_id = rec["rec_id"]
@@ -80,7 +83,7 @@ def validate_and_prepare(rec, validated_file):
     size = get_size(file_list)
     print(f"[INFO] Size: {size:.2f}GB")
 
-    write_file_list(rec_id, file_list)
+    write_file_list(rec_id, file_list, project, version)
 
     columns = list(rec.index)
     rec["size_gb"] = round(size, 2)
@@ -90,13 +93,14 @@ def validate_and_prepare(rec, validated_file):
 
 
 def main(datasets_file):
-    validated_file = datasets_file.replace(".csv", "-validated.csv")
+    project, version = datasets_file.split(".")[0].split("-")[2:4]
+    validated_file = datasets_file.replace("datasets-", "datasets-validated-")
     df = _parse(datasets_file)
 
     print(", ".join([column for column in list(df.columns)]), file=open(validated_file, "w"))
 
     for _, rec in df.iterrows():
-        validate_and_prepare(rec, validated_file)
+        validate_and_prepare(rec, validated_file, project, version)
 
     print(f"[INFO] Wrote: {validated_file}")
 
