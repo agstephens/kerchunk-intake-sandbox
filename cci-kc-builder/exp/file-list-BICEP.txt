@@ -1,0 +1,5 @@
+/neodc/bicep/data/oceanic_export_production/v1.0/monthly/1998/BICEP_NCEO_ExportProduction_ESA-OC-L3S-MERGED-1M_MONTHLY_9km_mapped_199801-fv4.2.nc
+/neodc/bicep/data/oceanic_export_production/v1.0/monthly/1998/BICEP_NCEO_ExportProduction_ESA-OC-L3S-MERGED-1M_MONTHLY_9km_mapped_199802-fv4.2.nc
+/neodc/bicep/data/oceanic_export_production/v1.0/monthly/1998/BICEP_NCEO_ExportProduction_ESA-OC-L3S-MERGED-1M_MONTHLY_9km_mapped_199803-fv4.2.nc
+/neodc/bicep/data/oceanic_export_production/v1.0/monthly/1998/BICEP_NCEO_ExportProduction_ESA-OC-L3S-MERGED-1M_MONTHLY_9km_mapped_199804-fv4.2.nc
+/neodc/bicep/data/oceanic_export_production/v1.0/monthly/1998/BICEP_NCEO_ExportProduction_ESA-OC-L3S-MERGED-1M_MONTHLY_9km_mapped_199805-fv4.2.nc
